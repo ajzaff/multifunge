@@ -4,16 +4,17 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.EmptyStackException;
-import java.util.Scanner;
 import java.util.Stack;
 
-import static com.alanjz.multifunge.Operator.*;
-
 public class FungeRunner implements Runnable {
+  public static final boolean DEBUG = true;
+  private static BufferedReader stdioReader;
   private Funge funge;
   private Thread th;
+  private Logger logger;
   public FungeRunner(Funge funge) {
     this.funge = funge;
+    this.logger = new Logger();
     th = new Thread(this);
   }
   public void start() {
@@ -22,15 +23,16 @@ public class FungeRunner implements Runnable {
   @Override
   public void run() {
     Stack<Integer> dataStack;
-    BufferedReader bufferedReader;
+    boolean isRunning;
     Caret caret;
     Funge cur;
 
     dataStack = new Stack<>();
-    bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-    caret = new Caret();
+    caret = Caret.fromOrigin();
+    isRunning = true;
     cur = funge;
-    while(cur != null) {
+    while(isRunning) {
+      if(cur == null) continue;
       Operator o = cur.operator;
       switch (o) {
         case R_CARET:
@@ -39,22 +41,36 @@ public class FungeRunner implements Runnable {
         case D_CARET:
           caret.d = o.caretDirection;
           break;
-        case INPUT_ASCII:
-          pushChar(dataStack, bufferedReader);
+        case PUSH_ASCII:
+          pushChar(dataStack);
           break;
-        case OUTPUT_ASCII:
+        case POP_ASCII:
           char chr = popChar(dataStack);
           if(chr != 0)
             System.out.print(chr);
           break;
+        case HALT:
+          isRunning = false;
+          break;
       }
-      cur = cur.getChild(caret.d);
+      if(isRunning) {
+        cur = cur.getChild(caret.d);
+        if(cur == null)
+          getLogger().error(
+              "detected diverging code path during execution of program;",
+              "caret vector increases indefinitely;",
+              String.format("at: %s.", caret)
+          );
+      }
     }
   }
 
-  private void pushChar(Stack<Integer> dataStack, BufferedReader bufferedReader) {
+  private void pushChar(Stack<Integer> dataStack) {
     try {
-      dataStack.push(bufferedReader.read());
+      if(stdioReader == null)
+        stdioReader = new BufferedReader(
+            new InputStreamReader(System.in));
+      dataStack.push(stdioReader.read());
     }
     catch (IOException e) {
       dataStack.push(0);
@@ -68,5 +84,9 @@ public class FungeRunner implements Runnable {
     catch (EmptyStackException e) {
       return 0;
     }
+  }
+
+  private Logger getLogger() {
+    return logger;
   }
 }

@@ -3,18 +3,13 @@ package com.alanjz.multifunge;
 import java.util.Arrays;
 
 public class Caret {
-  public static final Caret ORIGIN = new Caret(Location.ORIGIN, Direction.RIGHT);
 
   public Location location;
   public Direction d;
 
-  public Caret(Location location, Direction d) {
+  private Caret(Location location, Direction d) {
     this.location = location;
     this.d = d;
-  }
-
-  public Caret() {
-    this(new Location(), Direction.RIGHT);
   }
 
   public void step() {
@@ -36,5 +31,18 @@ public class Caret {
       return false;
     Caret e = (Caret) o;
     return location.equals(e.location) && d == e.d;
+  }
+
+  @Override
+  public String toString() {
+    return String.format("<%s %s>", location, d);
+  }
+
+  public static Caret fromOrigin() {
+    return new Caret(Location.fromOrigin(), Direction.RIGHT);
+  }
+
+  public static Caret from(Location location, Direction d) {
+    return new Caret(location, d);
   }
 }

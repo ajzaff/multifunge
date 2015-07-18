@@ -1,7 +1,5 @@
 package com.alanjz.multifunge;
 
-import java.util.Arrays;
-
 public enum Direction {
   RIGHT(1,0),
   DOWN(0,1),

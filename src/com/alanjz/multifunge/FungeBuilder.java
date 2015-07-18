@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-import static com.alanjz.multifunge.Direction.*;
+import static com.alanjz.multifunge.Direction.RIGHT;
 import static com.alanjz.multifunge.Operator.*;
 
 public class FungeBuilder {
@@ -27,14 +27,14 @@ public class FungeBuilder {
     boolean isRunning;
     Caret caret;
 
-    caret = new Caret();
+    caret = Caret.fromOrigin();
     fungeMap = new HashMap<>();
     branchStack = new Stack<>();
 
     // set the root.
     rootEntry = FungeEntry.from(RIGHT, new Funge(R_CARET));
     rootEntry.funge.isRoot = true;
-    fungeMap.put(Location.ORIGIN.copy(), rootEntry);
+    fungeMap.put(caret.location.copy(), rootEntry);
 
     isRunning = true;
     FungeEntry prevEntry = rootEntry;
@@ -42,6 +42,7 @@ public class FungeBuilder {
       MapResponse mapResponse;
       FungeEntry currEntry;
       Operator operator;
+      Funge funge;
 
       operator = operatorAt(fungeMap, caret.location);
       mapResponse = handleMap(fungeMap, branchStack, operator, caret);
@@ -57,7 +58,8 @@ public class FungeBuilder {
           prevEntry = currEntry;
           break;
         case CREATE:
-          currEntry = FungeEntry.from(caret.d, new Funge(operator));
+          funge = new Funge(operator);
+          currEntry = FungeEntry.from(caret.d, funge);
           prevEntry.funge.addChild(caret.d, currEntry.funge);
           fungeMap.put(caret.location.copy(), currEntry);
           prevEntry = currEntry;
@@ -130,7 +132,7 @@ public class FungeBuilder {
     if(location.x >= line.length())
       return EMPTY;
 
-    return location.equals(Location.ORIGIN)?
+    return location.equals(-1, 0)?
         Operator.R_CARET :
         searchBy(line.charAt(location.x));
   }

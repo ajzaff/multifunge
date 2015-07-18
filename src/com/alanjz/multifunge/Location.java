@@ -3,16 +3,11 @@ package com.alanjz.multifunge;
 import java.util.Arrays;
 
 public class Location {
-  public static final Location ORIGIN = new Location(-1, 0);
   public int x, y;
 
   public Location(int x, int y) {
     this.x = x;
     this.y = y;
-  }
-
-  public Location() {
-    this(0,0);
   }
 
   public void add(Direction d) {
@@ -34,6 +29,23 @@ public class Location {
     if(!(o instanceof Location))
       return false;
     Location e = (Location) o;
-    return x == e.x && y == e.y;
+    return equals(e.x, e.y);
+  }
+
+  public boolean equals(int x, int y) {
+    return this.x == x && this.y == y;
+  }
+
+  @Override
+  public String toString() {
+    return String.format("%d %d", x, y);
+  }
+
+  public static Location from(int x, int y) {
+    return new Location(x, y);
+  }
+
+  public static Location fromOrigin() {
+    return new Location(-1,0);
   }
 }
