@@ -268,17 +268,23 @@ def push_gt():
 
 
 def get():
-	if len(s) > 1:
-		y, x = s.pop(), s.pop()
-		s.append(ord(m.get((x, y), '\0')))
-	else:
-		s.append(0)
+	y, x = -1, -1
+	if len(s) > 0:
+		y = s.pop()
+	if len(s) > 0:
+		x = s.pop()
+	s.append(ord(m.get((x, y), '\0')))
 
 
 def put():
-	if len(s) > 2:
-		v, y, x = s.pop(), s.pop(), s.pop()
-		m[x, y] = v
+	y, x, v = -1, -1, 0
+	if len(s) > 0:
+		y = s.pop()
+	if len(s) > 0:
+		x = s.pop()
+	if len(s) > 0:
+		v = s.pop()
+	m[x, y] = chr(v)
 
 
 def go_down():
