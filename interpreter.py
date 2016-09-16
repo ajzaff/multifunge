@@ -447,13 +447,14 @@ instr = {
 
 while True:
 	i = m.get((x, y), None)
-	c = instr[mode].get(i, None)
-	if c:
-		c()
+	if i is not None:
+		c = instr[mode].get(i, None)
+		if c:
+			_debug(i, c)
+			c()
 	elif x < 0 or y < 0 or y >= nlines or x >= linel:
 		_debug(i, c, exit=True)
 		sys.exit()
-	_debug(i, c)
 	x += xv
 	y += yv
 	
