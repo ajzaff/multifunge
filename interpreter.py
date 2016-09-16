@@ -184,46 +184,6 @@ def push_div():
 	s.append(a // b if b != 0 else 0)
 
 
-def push_0():
-	s.append(0)
-
-
-def push_1():
-	s.append(1)
-
-
-def push_2():
-	s.append(2)
-
-
-def push_3():
-	s.append(3)
-
-
-def push_4():
-	s.append(4)
-
-
-def push_5():
-	s.append(5)
-
-
-def push_6():
-	s.append(6)
-
-
-def push_7():
-	s.append(7)
-
-
-def push_8():
-	s.append(8)
-
-
-def push_9():
-	s.append(9)
-
-
 def dup():
 	if len(s) > 0:
 		s.append(s[-1])
@@ -425,16 +385,16 @@ instr = {
 		"-" : push_sub,
 		"." : pop_write_integer,
 		"/" : push_div,
-		"0" : push_0,
-		"1" : push_1,
-		"2" : push_2,
-		"3" : push_3,
-		"4" : push_4,
-		"5" : push_5,
-		"6" : push_6,
-		"7" : push_7,
-		"8" : push_8,
-		"9" : push_9,
+		"0" : lambda: s.append(0),
+		"1" : lambda: s.append(1),
+		"2" : lambda: s.append(2),
+		"3" : lambda: s.append(3),
+		"4" : lambda: s.append(4),
+		"5" : lambda: s.append(5),
+		"6" : lambda: s.append(6),
+		"7" : lambda: s.append(7),
+		"8" : lambda: s.append(8),
+		"9" : lambda: s.append(9),
 		":" : dup,
 		"<" : go_left,
 		">" : go_right,
