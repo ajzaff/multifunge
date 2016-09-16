@@ -31,31 +31,37 @@ r_input = input if sys.version.startswith("3") else raw_input
 
 
 def escape_0():
+	global mode
 	s.append(0)
 	mode = "str"
 
 
 def escape_tab():
+	global mode
 	s.append(9)
 	mode = "str"
 
 
 def escape_lf():
+	global mode
 	s.append(10)
 	mode = "str"
 
 
 def escape_cr():
+	global mode
 	s.append(13)
 	mode = "str"
 
 
 def escape_quote():
+	global mode
 	s.append(34)
 	mode = "str"
 	
 	
 def escape_escape():
+	global mode
 	s.append(92)
 	mode = "str"
 
