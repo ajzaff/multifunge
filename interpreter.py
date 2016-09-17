@@ -98,7 +98,7 @@ def _dname((xv, yv)):
 	
 	
 def _debug(i, c, exit=False):
-	global pc, mode, x, y, xv, yv, s
+	global pc
 	pc += 1
 	print(str(pc).zfill(8), end="\t")
 	print(mode, (x, y), _dname((xv, yv)), i, hex(id(c)), sep="\t", end="\t")
@@ -144,9 +144,7 @@ def push_mod():
 
 
 def push_read_integer():
-	global sp
-	s[sp] = int(r_input())
-	sp += 1
+	_push(int(r_input()))
 
 
 def push_mul():
