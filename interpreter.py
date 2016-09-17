@@ -17,12 +17,13 @@ xv, yv = 1, 0
 x, y = 0, 0
 pc = -1
 sp = 0
-s = []
+s = [0 for _ in range(256)]
 mode = "cmd"
 r_input = input if sys.version.startswith("3") else raw_input
 
 
 def _pop():
+	global sp
 	if sp > 0:
 		sp -= 1
 		return s[sp]
@@ -31,43 +32,47 @@ def _pop():
 
 
 def _push(v):
-	s[sp] = v
+	global sp
+	if sp < len(s):
+		s[sp] = v
+	else:
+		s.append(v)
 	sp += 1
 
 
 def escape_0():
 	global mode
-	s.append(0)
+	_push(0)
 	mode = "str"
 
 
 def escape_tab():
 	global mode
-	s.append(9)
+	_push(9)
 	mode = "str"
 
 
 def escape_lf():
 	global mode
-	s.append(10)
+	_push(10)
 	mode = "str"
 
 
 def escape_cr():
 	global mode
-	s.append(13)
+	_push(13)
 	mode = "str"
 
 
 def escape_quote():
 	global mode
-	s.append(34)
+	_push(34)
 	mode = "str"
 	
 	
 def escape_escape():
 	global mode
-	s.append(92)
+	_push(92)
 	mode = "str"
 
 
@@ -101,8 +106,8 @@ def str_escape():
 def push_logical_not():
 	a = 0
 	if sp >= 0:
-		a = s.pop()
-	s.append(1 if a == 0 else 0)
+		a = _pop()
+	_push(1 if a == 0 else 0)
 
 
 def toggle_str_mode():
@@ -118,16 +123,16 @@ def advance_instr():
 
 def pop_stack_discard():
 	if sp >= 0:
-		s.pop()
+		_pop()
 
 
 def push_mod():
 	a, b = 0, 0
 	if sp >= 0:
-		b = s.pop()
+		b = _pop()
 	if sp >= 0:
-		b = s.pop()
-	s.append(a % b if b != 0 else 0)
+		b = _pop()
+	_push(a % b if b != 0 else 0)
 
 
 def push_read_integer():
@@ -135,62 +140,62 @@ def push_read_integer():
 	v = r_input()
 	if v.isdigit():
 		n = int(v)
-	s.append(n)
+	_push(n)
 
 
 def push_mul():
 	a, b = 0, 0
 	if sp >= 0:
-		b = s.pop()
+		b = _pop()
 	if sp >= 0:
-		a = s.pop()
-	s.append(a * b)
+		a = _pop()
+	_push(a * b)
 
 
 def push_add():
 	a, b = 0, 0
 	if sp >= 0:
-		b = s.pop()
+		b = _pop()
 	if sp >= 0:
-		a = s.pop()
-	s.append(a + b)
+		a = _pop()
+	_push(a + b)
 
 
 def pop_write_ascii():
 	a = 0
 	if sp >= 0:
-		a = s.pop()
+		a = _pop()
 	print(chr(a), end='')
 
 
 def push_sub():
 	a, b = 0, 0
 	if sp >= 0:
-		b = s.pop()
+		b = _pop()
 	if sp >= 0:
-		a = s.pop()
-	s.append(a - b)
+		a = _pop()
+	_push(a - b)
 
 
 def pop_write_integer():
 	a = 0
 	if sp >= 0:
-		a = s.pop()
+		a = _pop()
 	print(a, end=' ')
 
 
 def push_div():
 	a, b = 0, 0
 	if sp >= 0:
-		b = s.pop()
+		b = _pop()
 	if sp >= 0:
-		a = s.pop()
-	s.append(a // b if b != 0 else 0)
+		a = _pop()
+	_push(a // b if b != 0 else 0)
 
 
 def dup():
 	if sp >= 0:
-		s.append(s[-1])
+		_push(s[-1])
 
 
 def go_left():
@@ -213,7 +218,7 @@ def go_away():
 
 def swp():
 	if len(s) > 1:
-		s.extend([s.pop(), s.pop()])
+		s.extend([_pop(), _pop()])
 
 
 def go_up():
@@ -224,36 +229,36 @@ def go_up():
 def go_x():
 	global xv, yv
 	xv, yv = 1, 0
-	if sp >= 0 and s.pop() != 0:
+	if sp >= 0 and _pop() != 0:
 		xv = -1
 
 
 def push_gt():
 	a, b = 0, 0
 	if sp >= 0:
-		b = s.pop()
+		b = _pop()
 	if sp >= 0:
-		a = s.pop()
-	s.append(1 if a > b else 0)
+		a = _pop()
+	_push(1 if a > b else 0)
 
 
 def get():
 	y, x = -1, -1
 	if sp >= 0:
-		y = s.pop()
+		y = _pop()
 	if sp >= 0:
-		x = s.pop()
-	s.append(ord(m.get((x, y), '\0')))
+		x = _pop()
+	_push(ord(m.get((x, y), '\0')))
 
 
 def put():
 	y, x, v = -1, -1, 0
 	if sp >= 0:
-		y = s.pop()
+		y = _pop()
 	if sp >= 0:
-		x = s.pop()
+		x = _pop()
 	if sp >= 0:
-		v = s.pop()
+		v = _pop()
 	m[x, y] = chr(v)
 
 
@@ -265,7 +270,7 @@ def go_down():
 def go_y():
 	global xv, yv
 	xv, yv = 0, 1
-	if sp >= 0 and s.pop() != 0:
+	if sp >= 0 and _pop() != 0:
 		yv = -1
 
 
@@ -279,102 +284,102 @@ instr = {
 		"\\": escape_escape
 	},
 	"str": {
-		"\t": lambda: s.append(9),
-		" " : lambda: s.append(32),
-		"!" : lambda: s.append(33),
+		"\t": lambda: _push(9),
+		" " : lambda: _push(32),
+		"!" : lambda: _push(33),
 		'"' : str_quote,
-		"#" : lambda: s.append(35),
-		"$" : lambda: s.append(36),
-		"%" : lambda: s.append(37),
-		"&" : lambda: s.append(38),
-		"'" : lambda: s.append(39),
-		"(" : lambda: s.append(40),
-		")" : lambda: s.append(41),
-		"*" : lambda: s.append(42),
-		"+" : lambda: s.append(43),
-		"," : lambda: s.append(44),
-		"-" : lambda: s.append(45),
-		"." : lambda: s.append(46),
-		"/" : lambda: s.append(47),
-		"0" : lambda: s.append(48),
-		"1" : lambda: s.append(49),
-		"2" : lambda: s.append(50),
-		"3" : lambda: s.append(51),
-		"4" : lambda: s.append(52),
-		"5" : lambda: s.append(53),
-		"6" : lambda: s.append(54),
-		"7" : lambda: s.append(55),
-		"8" : lambda: s.append(56),
-		"9" : lambda: s.append(57),
-		":" : lambda: s.append(58),
-		";" : lambda: s.append(59),
-		"<" : lambda: s.append(60),
-		"=" : lambda: s.append(61),
-		">" : lambda: s.append(62),
-		"?" : lambda: s.append(63),
-		"@" : lambda: s.append(64),
-		"A" : lambda: s.append(65),
-		"B" : lambda: s.append(66),
-		"C" : lambda: s.append(67),
-		"D" : lambda: s.append(68),
-		"E" : lambda: s.append(69),
-		"F" : lambda: s.append(70),
-		"G" : lambda: s.append(71),
-		"H" : lambda: s.append(72),
-		"I" : lambda: s.append(73),
-		"J" : lambda: s.append(74),
-		"K" : lambda: s.append(75),
-		"L" : lambda: s.append(76),
-		"M" : lambda: s.append(77),
-		"N" : lambda: s.append(78),
-		"O" : lambda: s.append(79),
-		"P" : lambda: s.append(80),
-		"Q" : lambda: s.append(81),
-		"R" : lambda: s.append(82),
-		"S" : lambda: s.append(83),
-		"T" : lambda: s.append(84),
-		"U" : lambda: s.append(85),
-		"V" : lambda: s.append(86),
-		"W" : lambda: s.append(87),
-		"X" : lambda: s.append(88),
-		"Y" : lambda: s.append(89),
-		"Z" : lambda: s.append(90),
-		"[" : lambda: s.append(91),
+		"#" : lambda: _push(35),
+		"$" : lambda: _push(36),
+		"%" : lambda: _push(37),
+		"&" : lambda: _push(38),
+		"'" : lambda: _push(39),
+		"(" : lambda: _push(40),
+		")" : lambda: _push(41),
+		"*" : lambda: _push(42),
+		"+" : lambda: _push(43),
+		"," : lambda: _push(44),
+		"-" : lambda: _push(45),
+		"." : lambda: _push(46),
+		"/" : lambda: _push(47),
+		"0" : lambda: _push(48),
+		"1" : lambda: _push(49),
+		"2" : lambda: _push(50),
+		"3" : lambda: _push(51),
+		"4" : lambda: _push(52),
+		"5" : lambda: _push(53),
+		"6" : lambda: _push(54),
+		"7" : lambda: _push(55),
+		"8" : lambda: _push(56),
+		"9" : lambda: _push(57),
+		":" : lambda: _push(58),
+		";" : lambda: _push(59),
+		"<" : lambda: _push(60),
+		"=" : lambda: _push(61),
+		">" : lambda: _push(62),
+		"?" : lambda: _push(63),
+		"@" : lambda: _push(64),
+		"A" : lambda: _push(65),
+		"B" : lambda: _push(66),
+		"C" : lambda: _push(67),
+		"D" : lambda: _push(68),
+		"E" : lambda: _push(69),
+		"F" : lambda: _push(70),
+		"G" : lambda: _push(71),
+		"H" : lambda: _push(72),
+		"I" : lambda: _push(73),
+		"J" : lambda: _push(74),
+		"K" : lambda: _push(75),
+		"L" : lambda: _push(76),
+		"M" : lambda: _push(77),
+		"N" : lambda: _push(78),
+		"O" : lambda: _push(79),
+		"P" : lambda: _push(80),
+		"Q" : lambda: _push(81),
+		"R" : lambda: _push(82),
+		"S" : lambda: _push(83),
+		"T" : lambda: _push(84),
+		"U" : lambda: _push(85),
+		"V" : lambda: _push(86),
+		"W" : lambda: _push(87),
+		"X" : lambda: _push(88),
+		"Y" : lambda: _push(89),
+		"Z" : lambda: _push(90),
+		"[" : lambda: _push(91),
 		"\\": str_escape,
-		"]" : lambda: s.append(93),
-		"^" : lambda: s.append(94),
-		"_" : lambda: s.append(95),
-		"`" : lambda: s.append(96),
-		"a" : lambda: s.append(97),
-		"b" : lambda: s.append(98),
-		"c" : lambda: s.append(99),
-		"d" : lambda: s.append(100),
-		"e" : lambda: s.append(101),
-		"f" : lambda: s.append(102),
-		"g" : lambda: s.append(103),
-		"h" : lambda: s.append(104),
-		"i" : lambda: s.append(105),
-		"j" : lambda: s.append(106),
-		"k" : lambda: s.append(107),
-		"l" : lambda: s.append(108),
-		"m" : lambda: s.append(109),
-		"n" : lambda: s.append(110),
-		"o" : lambda: s.append(111),
-		"p" : lambda: s.append(112),
-		"q" : lambda: s.append(113),
-		"r" : lambda: s.append(114),
-		"s" : lambda: s.append(115),
-		"t" : lambda: s.append(116),
-		"u" : lambda: s.append(117),
-		"v" : lambda: s.append(118),
-		"w" : lambda: s.append(119),
-		"x" : lambda: s.append(120),
-		"y" : lambda: s.append(121),
-		"z" : lambda: s.append(122),
-		"{" : lambda: s.append(123),
-		"|" : lambda: s.append(124),
-		"}" : lambda: s.append(125),
-		"~" : lambda: s.append(126)
+		"]" : lambda: _push(93),
+		"^" : lambda: _push(94),
+		"_" : lambda: _push(95),
+		"`" : lambda: _push(96),
+		"a" : lambda: _push(97),
+		"b" : lambda: _push(98),
+		"c" : lambda: _push(99),
+		"d" : lambda: _push(100),
+		"e" : lambda: _push(101),
+		"f" : lambda: _push(102),
+		"g" : lambda: _push(103),
+		"h" : lambda: _push(104),
+		"i" : lambda: _push(105),
+		"j" : lambda: _push(106),
+		"k" : lambda: _push(107),
+		"l" : lambda: _push(108),
+		"m" : lambda: _push(109),
+		"n" : lambda: _push(110),
+		"o" : lambda: _push(111),
+		"p" : lambda: _push(112),
+		"q" : lambda: _push(113),
+		"r" : lambda: _push(114),
+		"s" : lambda: _push(115),
+		"t" : lambda: _push(116),
+		"u" : lambda: _push(117),
+		"v" : lambda: _push(118),
+		"w" : lambda: _push(119),
+		"x" : lambda: _push(120),
+		"y" : lambda: _push(121),
+		"z" : lambda: _push(122),
+		"{" : lambda: _push(123),
+		"|" : lambda: _push(124),
+		"}" : lambda: _push(125),
+		"~" : lambda: _push(126)
 	},
 	"cmd": {
 		"!" : push_logical_not,
@@ -389,16 +394,16 @@ instr = {
 		"-" : push_sub,
 		"." : pop_write_integer,
 		"/" : push_div,
-		"0" : lambda: s.append(0),
-		"1" : lambda: s.append(1),
-		"2" : lambda: s.append(2),
-		"3" : lambda: s.append(3),
-		"4" : lambda: s.append(4),
-		"5" : lambda: s.append(5),
-		"6" : lambda: s.append(6),
-		"7" : lambda: s.append(7),
-		"8" : lambda: s.append(8),
-		"9" : lambda: s.append(9),
+		"0" : lambda: _push(0),
+		"1" : lambda: _push(1),
+		"2" : lambda: _push(2),
+		"3" : lambda: _push(3),
+		"4" : lambda: _push(4),
+		"5" : lambda: _push(5),
+		"6" : lambda: _push(6),
+		"7" : lambda: _push(7),
+		"8" : lambda: _push(8),
+		"9" : lambda: _push(9),
 		":" : dup,
 		"<" : go_left,
 		">" : go_right,
