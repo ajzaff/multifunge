@@ -1,10 +1,6 @@
 import sys
 
 
-# globals
-r_input = input if sys.version.startswith("3") else raw_input
-
-
 def _pop():
 	global sp
 	if sp > 0:
@@ -134,7 +130,7 @@ def push_mod():
 
 
 def push_read_integer():
-	_push(int(r_input()))
+	_push(int(stdin.readline()))
 
 
 def push_mul():
