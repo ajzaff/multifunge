@@ -117,7 +117,7 @@ def push_logical_not():
 
 def toggle_str_mode():
 	global mode
-	mode = "str" if mode == "cmd" else ("cmd" if mode == "str" else mode)
+	mode = "str" if mode == "cmd" else "cmd"
 
 
 def advance_instr():
