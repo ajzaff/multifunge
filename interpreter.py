@@ -16,9 +16,23 @@ with open(sys.argv[1], "rb") as f:
 xv, yv = 1, 0
 x, y = 0, 0
 pc = -1
+sp = 0
 s = []
 mode = "cmd"
 r_input = input if sys.version.startswith("3") else raw_input
+
+
+def _pop():
+	if sp > 0:
+		sp -= 1
+		return s[sp]
+	else:
+		return 0
+
+
+def _push(v):
+	s[sp] = v
+	sp += 1
 
 
 def escape_0():
@@ -86,7 +100,7 @@ def str_escape():
 
 def push_logical_not():
 	a = 0
-	if len(s) > 0:
+	if sp >= 0:
 		a = s.pop()
 	s.append(1 if a == 0 else 0)
 
@@ -103,15 +117,15 @@ def advance_instr():
 
 
 def pop_stack_discard():
-	if len(s) > 0:
+	if sp >= 0:
 		s.pop()
 
 
 def push_mod():
 	a, b = 0, 0
-	if len(s) > 0:
+	if sp >= 0:
 		b = s.pop()
-	if len(s) > 0:
+	if sp >= 0:
 		b = s.pop()
 	s.append(a % b if b != 0 else 0)
 
@@ -126,56 +140,56 @@ def push_read_integer():
 
 def push_mul():
 	a, b = 0, 0
-	if len(s) > 0:
+	if sp >= 0:
 		b = s.pop()
-	if len(s) > 0:
+	if sp >= 0:
 		a = s.pop()
 	s.append(a * b)
 
 
 def push_add():
 	a, b = 0, 0
-	if len(s) > 0:
+	if sp >= 0:
 		b = s.pop()
-	if len(s) > 0:
+	if sp >= 0:
 		a = s.pop()
 	s.append(a + b)
 
 
 def pop_write_ascii():
 	a = 0
-	if len(s) > 0:
+	if sp >= 0:
 		a = s.pop()
 	print(chr(a), end='')
 
 
 def push_sub():
 	a, b = 0, 0
-	if len(s) > 0:
+	if sp >= 0:
 		b = s.pop()
-	if len(s) > 0:
+	if sp >= 0:
 		a = s.pop()
 	s.append(a - b)
 
 
 def pop_write_integer():
 	a = 0
-	if len(s) > 0:
+	if sp >= 0:
 		a = s.pop()
 	print(a, end=' ')
 
 
 def push_div():
 	a, b = 0, 0
-	if len(s) > 0:
+	if sp >= 0:
 		b = s.pop()
-	if len(s) > 0:
+	if sp >= 0:
 		a = s.pop()
 	s.append(a // b if b != 0 else 0)
 
 
 def dup():
-	if len(s) > 0:
+	if sp >= 0:
 		s.append(s[-1])
 
 
@@ -210,35 +224,35 @@ def go_up():
 def go_x():
 	global xv, yv
 	xv, yv = 1, 0
-	if len(s) > 0 and s.pop() != 0:
+	if sp >= 0 and s.pop() != 0:
 		xv = -1
 
 
 def push_gt():
 	a, b = 0, 0
-	if len(s) > 0:
+	if sp >= 0:
 		b = s.pop()
-	if len(s) > 0:
+	if sp >= 0:
 		a = s.pop()
 	s.append(1 if a > b else 0)
 
 
 def get():
 	y, x = -1, -1
-	if len(s) > 0:
+	if sp >= 0:
 		y = s.pop()
-	if len(s) > 0:
+	if sp >= 0:
 		x = s.pop()
 	s.append(ord(m.get((x, y), '\0')))
 
 
 def put():
 	y, x, v = -1, -1, 0
-	if len(s) > 0:
+	if sp >= 0:
 		y = s.pop()
-	if len(s) > 0:
+	if sp >= 0:
 		x = s.pop()
-	if len(s) > 0:
+	if sp >= 0:
 		v = s.pop()
 	m[x, y] = chr(v)
 
@@ -251,7 +265,7 @@ def go_down():
 def go_y():
 	global xv, yv
 	xv, yv = 0, 1
-	if len(s) > 0 and s.pop() != 0:
+	if sp >= 0 and s.pop() != 0:
 		yv = -1
 
 
