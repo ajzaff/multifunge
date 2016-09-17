@@ -235,17 +235,17 @@ def get():
 
 
 def put():
-	y, x, v = -1, -1, 0
-	if sp >= 0:
-		y = _pop()
-	if sp >= 0:
-		x = _pop()
-	if sp >= 0:
-		v = _pop()
-	if 0 <= y < nlines and 0 <= x < len(lines[y]):
-		lines[y][x] = chr(v)
-		return
-	m[x, y] = chr(v)
+	y = s[sp-1]
+	x = s[sp-2]
+	v = chr(s[sp-3])
+	try:
+		lines[y][x] = v
+		global sp
+		sp -= 3
+	except:
+		m[x, y] = v
+		global sp
+		sp -= 3
 
 
 def go_down():
