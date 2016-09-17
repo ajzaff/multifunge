@@ -3,9 +3,6 @@ import random
 import sys
 
 
-DEBUG = False
-
-
 if len(sys.argv) < 2:
 	print("usage: %s <PROGRAM>" % sys.argv[0])
 	sys.exit(1)
@@ -70,12 +67,11 @@ def _dname((xv, yv)):
 	
 	
 def _debug(i, c, exit=False):
-	if DEBUG:
-		global pc, mode, x, y, xv, yv, s
-		pc += 1
-		print(str(pc).zfill(8), end="\t")
-		print(mode, (x, y), _dname((xv, yv)), i, hex(id(c)), sep="\t", end="\t")
-		print(s)
+	global pc, mode, x, y, xv, yv, s
+	pc += 1
+	print(str(pc).zfill(8), end="\t")
+	print(mode, (x, y), _dname((xv, yv)), i, hex(id(c)), sep="\t", end="\t")
+	print(s)
 
 
 def str_quote():
@@ -410,7 +406,8 @@ while True:
 	if i is not None:
 		c = instr[mode].get(i, None)
 		if c is not None:
-			_debug(i, c)
+			if __debug__:
+				_debug(i, c)
 			c()
 	x += xv
 	y += yv
