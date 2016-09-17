@@ -2,22 +2,7 @@ from __future__ import print_function
 import sys
 
 
-if len(sys.argv) < 2:
-	print("usage: %s <PROGRAM>" % sys.argv[0])
-	sys.exit(1)
-
-m = {}
-with open(sys.argv[1], "rb") as f:
-	global lines
-	lines = [list(line) for line in f.readlines()]
-	nlines = len(lines)
-
-xv, yv = 1, 0
-x, y = 0, 0
-pc = -1
-sp = 0
-s = [0 for _ in range(256)]
-mode = "cmd"
+# globals
 r_input = input if sys.version.startswith("3") else raw_input
 
 
@@ -401,14 +386,34 @@ instr = {
 	}
 }
 
-while True:
-	i = _get()
-	if i is not None:
-		c = instr[mode].get(i, None)
-		if c is not None:
-			if __debug__:
-				_debug(i, c)
-			c()
-	x += xv
-	y += yv
-	
+
+def main(prog):
+	global m, xv, yv, x, y, pc, sp, s, mode
+	with open(prog, "rb") as f:
+		global lines
+		lines = [list(line) for line in f.readlines()]
+		nlines = len(lines)
+	m = {}
+	xv, yv = 1, 0
+	x, y = 0, 0
+	pc = -1
+	sp = 0
+	s = [0 for _ in range(256)]
+	mode = "cmd"
+	while True:
+		i = _get()
+		if i is not None:
+			c = instr[mode].get(i, None)
+			if c is not None:
+				if __debug__:
+					_debug(i, c)
+				c()
+		x += xv
+		y += yv
+
+
+if __name__ == "__main__":
+	if len(sys.argv) < 2:
+		print("usage: %s <PROGRAM>" % sys.argv[0])
+		sys.exit(1)
+	main(sys.argv[1])
