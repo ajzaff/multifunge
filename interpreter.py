@@ -10,17 +10,11 @@ if len(sys.argv) < 2:
 	print("usage: %s <PROGRAM>" % sys.argv[0])
 	sys.exit(1)
 
-nlines = 0
-linel = 0
 m = {}
 with open(sys.argv[1], "rb") as f:
-	lines = f.readlines()
-	nlines = len(lines)
-	for y, line in enumerate(lines):
+	for y, line in enumerate(f):
 		for x, c in enumerate(line):
 			m[x, y] = c
-		linel = max(linel, len(line))
-	del lines
 
 xv, yv = 1, 0
 x, y = 0, 0
