@@ -43,6 +43,13 @@ def _get():
 		return lines[y][x]
 	except:
 		return m.get((x, y), None)
+		
+		
+def _get(x, y):
+	try:
+		return lines[y][x]
+	except:
+		return m.get((x, y), '\0')
 
 
 def escape_0():
@@ -222,15 +229,9 @@ def push_gt():
 
 
 def get():
-	y, x = -1, -1
-	if sp >= 0:
-		y = _pop()
-	if sp >= 0:
-		x = _pop()
-	if 0 <= y < nlines and 0 <= x < len(lines[y]):
-		_push(ord(lines[y][x]))
-		return
-	_push(ord(m.get((x, y), '\0')))
+	global sp
+	s[sp-2] = ord(_get(s[sp-2], s[sp-1]))
+	sp -= 1
 
 
 def put():
