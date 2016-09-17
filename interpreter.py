@@ -141,11 +141,9 @@ def push_mod():
 
 
 def push_read_integer():
-	n = 0
-	v = r_input()
-	if v.isdigit():
-		n = int(v)
-	_push(n)
+	global sp
+	s[sp] = int(r_input())
+	sp += 1
 
 
 def push_mul():
