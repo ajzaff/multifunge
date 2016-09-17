@@ -199,7 +199,7 @@ def go_right():
 	xv, yv = 1, 0
 
 
-def go_rand():
+def go_away():
 	global xv, yv
 	t = random.randint(0, 1) * 2 - 1
 	xv = random.randint(0, 1)
@@ -398,7 +398,7 @@ instr = {
 		":" : dup,
 		"<" : go_left,
 		">" : go_right,
-		"?" : go_rand,
+		"?" : go_away,
 		"@" : sys.exit,
 		"\\": swp,
 		"^" : go_up,
