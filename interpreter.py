@@ -254,9 +254,7 @@ def go_down():
 
 def go_y():
 	global xv, yv
-	xv, yv = 0, 1
-	if sp >= 0 and _pop() != 0:
-		yv = -1
+	xv, yv = 0, 1 if _pop() == 0 else -1
 
 
 instr = {
