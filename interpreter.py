@@ -389,9 +389,8 @@ instr = {
 
 
 def main(prog, _input=sys.stdin, _output=sys.stdout):
-	global m, xv, yv, x, y, pc, sp, s, mode, stdin, stdout
+	global lines, m, xv, yv, x, y, pc, sp, s, mode, stdin, stdout
 	with open(prog, "rb") as f:
-		global lines
 		lines = [list(line) for line in f.readlines()]
 		nlines = len(lines)
 	m = {}
