@@ -192,6 +192,11 @@ def go_away():
 	xv *= t
 
 
+def stop():
+	global running
+	running = False
+
+
 def swp():
 	s[sp-2], s[sp-1] = s[sp-1], s[sp-2]
 
@@ -375,7 +380,7 @@ instr = {
 		"<" : go_left,
 		">" : go_right,
 		"?" : go_away,
-		"@" : sys.exit,
+		"@" : stop,
 		"\\": swp,
 		"^" : go_up,
 		"_" : go_x,
@@ -389,7 +394,7 @@ instr = {
 
 
 def main(prog, input=sys.stdin, output=sys.stdout):
-	global lines, m, xv, yv, x, y, pc, sp, s, mode, stdin, stdout
+	global lines, m, xv, yv, x, y, pc, sp, s, mode, stdin, stdout, running
 	with open(prog, "rb") as f:
 		lines = [list(line) for line in f.readlines()]
 	m = {}
@@ -401,7 +406,8 @@ def main(prog, input=sys.stdin, output=sys.stdout):
 	mode = "cmd"
 	stdin = input
 	stdout = output
-	while True:
+	running = True
+	while running:
 		i = _get()
 		if i is not None:
 			c = instr[mode].get(i, None)
