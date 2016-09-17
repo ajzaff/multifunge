@@ -26,8 +26,7 @@ def _pop():
 	if sp > 0:
 		sp -= 1
 		return s[sp]
-	else:
-		return 0
+	return 0
 
 
 def _push(v):
