@@ -167,10 +167,9 @@ def push_sub():
 
 
 def pop_write_integer():
-	a = 0
-	if sp >= 0:
-		a = _pop()
-	print(a, end=' ')
+	global sp
+	print(s[sp-1], end=' ')
+	sp -= 1
 
 
 def push_div():
