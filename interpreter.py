@@ -131,10 +131,9 @@ def pop_stack_discard():
 
 
 def push_mod():
-	if sp > 1:
-		global sp
-		s[sp-2] = s[sp-2] % s[sp-1]
-		sp -= 1
+	global sp
+	s[sp-2] = s[sp-2] % s[sp-1]
+	sp -= 1
 
 
 def push_read_integer():
@@ -144,31 +143,27 @@ def push_read_integer():
 
 
 def push_mul():
-	if sp > 1:
-		global sp
-		s[sp-2] = s[sp-2] * s[sp-1]
-		sp -= 1
+	global sp
+	s[sp-2] = s[sp-2] * s[sp-1]
+	sp -= 1
 
 
 def push_add():
-	if sp > 1:
-		global sp
-		s[sp-2] = s[sp-2] + s[sp-1]
-		sp -= 1
+	global sp
+	s[sp-2] = s[sp-2] + s[sp-1]
+	sp -= 1
 
 
 def pop_write_ascii():
-	if sp > 0:
-		global sp
-		print(chr(s[sp-1]), end='')
-		sp -= 1
+	global sp
+	print(chr(s[sp-1]), end='')
+	sp -= 1
 
 
 def push_sub():
-	if sp > 1:
-		global sp
-		s[sp-2] = s[sp-2] - s[sp-1]
-		sp -= 1
+	global sp
+	s[sp-2] = s[sp-2] - s[sp-1]
+	sp -= 1
 
 
 def pop_write_integer():
