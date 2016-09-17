@@ -1,5 +1,4 @@
 from __future__ import print_function
-import random
 import sys
 
 
@@ -210,6 +209,7 @@ def go_right():
 
 def go_away():
 	global xv, yv
+	import random
 	t = random.randint(0, 1) * 2 - 1
 	xv = random.randint(0, 1)
 	yv = (1 ^ xv) * t
