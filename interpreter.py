@@ -179,8 +179,7 @@ def push_div():
 
 
 def dup():
-	if sp > 0:
-		_push(s[sp-1])
+	_push(s[sp-1])
 
 
 def go_left():
