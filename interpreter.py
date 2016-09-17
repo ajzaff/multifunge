@@ -418,9 +418,6 @@ while True:
 		if c:
 			_debug(i, c)
 			c()
-	elif x < 0 or y < 0 or y >= nlines or x >= linel:
-		_debug(i, c, exit=True)
-		sys.exit()
 	x += xv
 	y += yv
 	
