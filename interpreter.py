@@ -127,8 +127,7 @@ def advance_instr():
 
 
 def pop_stack_discard():
-	if sp >= 0:
-		_pop()
+	sp -= 1
 
 
 def push_mod():
