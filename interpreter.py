@@ -415,6 +415,6 @@ def main(prog, input=sys.stdin, output=sys.stdout):
 
 if __name__ == "__main__":
 	if len(sys.argv) < 2:
-		stdout.write("usage: %s <PROGRAM>" % sys.argv[0])
+		sys.stdout.write("usage: %s <PROGRAM>\n" % sys.argv[0])
 		sys.exit(1)
 	main(sys.argv[1])
