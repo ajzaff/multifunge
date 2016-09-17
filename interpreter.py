@@ -45,7 +45,7 @@ def _get():
 		return m.get((x, y), None)
 		
 		
-def _get(x, y):
+def _getl(x, y):
 	try:
 		return lines[y][x]
 	except:
@@ -228,21 +228,20 @@ def push_gt():
 
 def get():
 	global sp
-	s[sp-2] = ord(_get(s[sp-2], s[sp-1]))
+	s[sp-2] = ord(_getl(s[sp-2], s[sp-1]))
 	sp -= 1
 
 
 def put():
+	global sp
 	y = s[sp-1]
 	x = s[sp-2]
 	v = chr(s[sp-3])
 	try:
 		lines[y][x] = v
-		global sp
 		sp -= 3
 	except:
 		m[x, y] = v
-		global sp
 		sp -= 3
 
 
