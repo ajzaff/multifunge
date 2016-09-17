@@ -89,7 +89,7 @@ def _debug(i, c, exit=False):
 	pc += 1
 	print(str(pc).zfill(8), end="\t")
 	print(mode, (x, y), _dname((xv, yv)), i, hex(id(c)), sep="\t", end="\t")
-	print(s)
+	print(s[:sp])
 
 
 def str_quote():
@@ -193,8 +193,8 @@ def push_div():
 
 
 def dup():
-	if sp >= 0:
-		_push(s[-1])
+	if sp > 0:
+		_push(s[sp-1])
 
 
 def go_left():
