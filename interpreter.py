@@ -212,9 +212,7 @@ def go_up():
 
 def go_x():
 	global xv, yv
-	xv, yv = 1, 0
-	if sp >= 0 and _pop() != 0:
-		xv = -1
+	xv, yv = 1 if _pop() == 0 else -1, 0
 
 
 def push_gt():
