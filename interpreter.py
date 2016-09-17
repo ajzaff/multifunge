@@ -173,12 +173,9 @@ def pop_write_integer():
 
 
 def push_div():
-	a, b = 0, 0
-	if sp >= 0:
-		b = _pop()
-	if sp >= 0:
-		a = _pop()
-	_push(a // b if b != 0 else 0)
+	global sp
+	s[sp-2] = s[sp-2] // s[sp-1]
+	sp -= 1
 
 
 def dup():
