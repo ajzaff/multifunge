@@ -37,7 +37,7 @@ def parse_test(tf, stdin):
 			desc = line
 			mode = ""
 		elif mode == "inp":
-			stdin.write("%s\n" % line)
+			stdin.write(line)
 		elif mode == "ipn":
 			stdin.write(line)
 			mode = ""
