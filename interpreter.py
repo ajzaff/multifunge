@@ -202,8 +202,7 @@ def go_away():
 
 
 def swp():
-	if len(s) > 1:
-		s.extend([_pop(), _pop()])
+	s[sp-2], s[sp-1] = s[sp-1], s[sp-2]
 
 
 def go_up():
