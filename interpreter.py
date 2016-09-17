@@ -388,7 +388,7 @@ instr = {
 }
 
 
-def main(prog, _input=sys.stdin, _output=sys.stdout):
+def main(prog, input=sys.stdin, output=sys.stdout):
 	global lines, m, xv, yv, x, y, pc, sp, s, mode, stdin, stdout
 	with open(prog, "rb") as f:
 		lines = [list(line) for line in f.readlines()]
@@ -399,8 +399,8 @@ def main(prog, _input=sys.stdin, _output=sys.stdout):
 	sp = 0
 	s = [0 for _ in range(256)]
 	mode = "cmd"
-	stdin = _input
-	stdout = _output
+	stdin = input
+	stdout = output
 	while True:
 		i = _get()
 		if i is not None:
