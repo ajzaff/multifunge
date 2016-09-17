@@ -415,7 +415,7 @@ while True:
 	i = m.get((x, y), None)
 	if i is not None:
 		c = instr[mode].get(i, None)
-		if c:
+		if c is not None:
 			_debug(i, c)
 			c()
 	x += xv
