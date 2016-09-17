@@ -167,10 +167,10 @@ def push_add():
 
 
 def pop_write_ascii():
-	a = 0
-	if sp >= 0:
-		a = _pop()
-	print(chr(a), end='')
+	if sp > 0:
+		global sp
+		print(chr(s[sp-1]), end='')
+		sp -= 1
 
 
 def push_sub():
