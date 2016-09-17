@@ -174,12 +174,10 @@ def pop_write_ascii():
 
 
 def push_sub():
-	a, b = 0, 0
-	if sp >= 0:
-		b = _pop()
-	if sp >= 0:
-		a = _pop()
-	_push(a - b)
+	if sp > 1:
+		global sp
+		s[sp-2] = s[sp-2] - s[sp-1]
+		sp -= 1
 
 
 def pop_write_integer():
