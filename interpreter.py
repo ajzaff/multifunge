@@ -216,12 +216,9 @@ def go_x():
 
 
 def push_gt():
-	a, b = 0, 0
-	if sp >= 0:
-		b = _pop()
-	if sp >= 0:
-		a = _pop()
-	_push(1 if a > b else 0)
+	global sp
+	s[sp-2] = 1 if s[sp-1] > s[sp-2] else 0
+	sp -= 1
 
 
 def get():
