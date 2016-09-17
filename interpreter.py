@@ -132,12 +132,10 @@ def pop_stack_discard():
 
 
 def push_mod():
-	a, b = 0, 0
-	if sp >= 0:
-		b = _pop()
-	if sp >= 0:
-		b = _pop()
-	_push(a % b if b != 0 else 0)
+	if sp > 1:
+		global sp
+		s[sp-2] = s[sp-2] % s[sp-1]
+		sp -= 1
 
 
 def push_read_integer():
