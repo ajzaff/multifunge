@@ -392,7 +392,6 @@ def main(prog, _input=sys.stdin, _output=sys.stdout):
 	global lines, m, xv, yv, x, y, pc, sp, s, mode, stdin, stdout
 	with open(prog, "rb") as f:
 		lines = [list(line) for line in f.readlines()]
-		nlines = len(lines)
 	m = {}
 	xv, yv = 1, 0
 	x, y = 0, 0
