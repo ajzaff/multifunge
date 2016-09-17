@@ -12,14 +12,16 @@ def parse_test(tf, stdin):
 	output = ''
 	desc = tf.name
 	tmt = 1000
-	for line in tf:
+	for i, line in enumerate(tf):
+		if mode not in ["inp", "out"]:
+			line = line.strip()
 		if line == "-@timeout":
 			mode = "tmt"
-		if line == "-@desc":
+		elif line == "-@desc":
 			mode = "dsc"
-		if line == "-@input":
+		elif line == "-@input":
 			mode = "inp"
-		if line == "-@input(no-line)":
+		elif line == "-@input(no-line)":
 			mode = "ipn"
 		elif line == "-@output":
 			mode = "out"
@@ -31,7 +33,7 @@ def parse_test(tf, stdin):
 		elif mode == "nam":
 			name = line
 			mode = ""
-		elif mode == "desc":
+		elif mode == "dsc":
 			desc = line
 			mode = ""
 		elif mode == "inp":
@@ -40,9 +42,9 @@ def parse_test(tf, stdin):
 			stdin.write(line)
 			mode = ""
 		elif mode == "out":
-			output += "%s\n" % line
+			output += line
 		elif mode == "otn":
-			output += "%s\n" % line
+			output += line
 			mode = ""
 	return tmt, desc, output
 

@@ -1,4 +1,4 @@
 -@desc
-the stop command "@" should terminate the program
+@ should terminate the program
 -@timeout
 5
