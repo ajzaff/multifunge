@@ -121,7 +121,7 @@ def toggle_str_mode():
 
 
 def advance_instr():
-	global x, y, xv, yv
+	global x, y
 	x += xv
 	y += yv
 
