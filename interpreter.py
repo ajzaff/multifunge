@@ -8,9 +8,9 @@ if len(sys.argv) < 2:
 
 m = {}
 with open(sys.argv[1], "rb") as f:
-	for y, line in enumerate(f):
-		for x, c in enumerate(line):
-			m[x, y] = c
+	global lines
+	lines = [list(line) for line in f.readlines()]
+	nlines = len(lines)
 
 xv, yv = 1, 0
 x, y = 0, 0
@@ -36,6 +36,13 @@ def _push(v):
 	else:
 		s.append(v)
 	sp += 1
+	
+
+def _get():
+	try:
+		return lines[y][x]
+	except:
+		return m.get((x, y), None)
 
 
 def escape_0():
@@ -247,6 +254,9 @@ def get():
 		y = _pop()
 	if sp >= 0:
 		x = _pop()
+	if 0 <= y < nlines and 0 <= x < len(lines[y]):
+		_push(ord(lines[y][x]))
+		return
 	_push(ord(m.get((x, y), '\0')))
 
 
@@ -258,6 +268,9 @@ def put():
 		x = _pop()
 	if sp >= 0:
 		v = _pop()
+	if 0 <= y < nlines and 0 <= x < len(lines[y]):
+		lines[y][x] = chr(v)
+		return
 	m[x, y] = chr(v)
 
 
@@ -420,7 +433,7 @@ instr = {
 }
 
 while True:
-	i = m.get((x, y), None)
+	i = _get()
 	if i is not None:
 		c = instr[mode].get(i, None)
 		if c is not None:
