@@ -1,4 +1,3 @@
-from __future__ import print_function
 import sys
 
 
@@ -85,9 +84,15 @@ def _dname((xv, yv)):
 def _debug(i, c, exit=False):
 	global pc
 	pc += 1
-	print(str(pc).zfill(8), end="\t")
-	print(mode, (x, y), _dname((xv, yv)), i, hex(id(c)), sep="\t", end="\t")
-	print(s[:sp])
+	stdout.write(str.format(
+		"{pc}\t{mode}\t{pos}\t{dir}\t{instr}\t{stack}\n",
+		pc=str(pc).zfill(8),
+		mode=mode,
+		pos=str((x, y)),
+		dir=_dname((x, y)),
+		instr=i,
+		stack=str(s[:sp])
+	))
 
 
 def str_quote():
@@ -146,7 +151,7 @@ def push_add():
 
 def pop_write_ascii():
 	global sp
-	print(chr(s[sp-1]), end='')
+	stdout.write(chr(s[sp-1]))
 	sp -= 1
 
 
@@ -158,7 +163,7 @@ def push_sub():
 
 def pop_write_integer():
 	global sp
-	print(s[sp-1], end=' ')
+	stdout.write(str.format("{i} ", i=s[sp-1]))
 	sp -= 1
 
 
@@ -387,8 +392,8 @@ instr = {
 }
 
 
-def main(prog):
-	global m, xv, yv, x, y, pc, sp, s, mode
+def main(prog, _input=sys.stdin, _output=sys.stdout):
+	global m, xv, yv, x, y, pc, sp, s, mode, stdin, stdout
 	with open(prog, "rb") as f:
 		global lines
 		lines = [list(line) for line in f.readlines()]
@@ -400,12 +405,14 @@ def main(prog):
 	sp = 0
 	s = [0 for _ in range(256)]
 	mode = "cmd"
+	stdin = _input
+	stdout = _output
 	while True:
 		i = _get()
 		if i is not None:
 			c = instr[mode].get(i, None)
 			if c is not None:
-				if __debug__:
+				if not __debug__:
 					_debug(i, c)
 				c()
 		x += xv
@@ -414,6 +421,6 @@ def main(prog):
 
 if __name__ == "__main__":
 	if len(sys.argv) < 2:
-		print("usage: %s <PROGRAM>" % sys.argv[0])
+		stdout.write("usage: %s <PROGRAM>" % sys.argv[0])
 		sys.exit(1)
 	main(sys.argv[1])
