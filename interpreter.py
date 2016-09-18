@@ -90,7 +90,7 @@ def _dname((xv, yv)):
 	return dir_names.get((xv, yv), (xv, yv))
 	
 	
-def _debug(i, c, exit=False):
+def _debug(c, exit=False):
 	global pc
 	pc += 1
 	stdout.write(str.format(
@@ -99,7 +99,7 @@ def _debug(i, c, exit=False):
 		mode=mode,
 		pos=str((x, y)),
 		dir=_dname((xv, yv)),
-		instr=i,
+		instr=_getl(x, y),
 		stack=str(s[:sp])
 	))
 
@@ -423,7 +423,7 @@ def main(prog, input=stdin, output=stdout):
 		c = _get()
 		if c is not None:
 			if not __debug__:
-				_debug(i, c)
+				_debug(c)
 			c()
 		x += xv
 		y += yv
