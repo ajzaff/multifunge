@@ -111,10 +111,7 @@ def str_escape():
 
 
 def push_logical_not():
-	a = 0
-	if sp >= 0:
-		a = _pop()
-	_push(1 if a == 0 else 0)
+	_push(int(not _pop()))
 
 
 def toggle_str_mode():
