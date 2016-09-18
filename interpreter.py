@@ -194,7 +194,7 @@ def go_right():
 def go_away():
 	global xv, yv
 	import random
-	(xv, yv) = random.choice(dirs)
+	xv, yv = random.choice(dirs)
 
 
 def stop():
