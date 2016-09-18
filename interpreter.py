@@ -11,10 +11,9 @@ def _pop():
 
 def _push(v):
 	global sp
-	if sp < len(s):
-		s[sp] = v
-	else:
-		s.append(v)
+	if sp >= len(s):
+		s.extend([0 for _ in range(sp)])
+	s[sp] = v
 	sp += 1
 	
 
