@@ -27,12 +27,7 @@ def _push(v):
 
 def _get():
 	if 0 <= y < nlines and 0 <= x < linel[y]:
-		c = codes[y][x]
-		if c is not None:
-			return c
-		c = lines[y][x]
-		c = codes[y][x] = instr[mode].get(c, None)
-		return c
+		return codes[y][x] or instr[mode].get(lines[y][x], None)
 	return m.get((x, y), None)
 		
 		
