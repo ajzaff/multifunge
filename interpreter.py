@@ -73,7 +73,7 @@ def _dname((xv, yv)):
 		( 0,  1): "down",
 		(-1,  0): "left",
 		( 1,  0): "right"
-	}.get((xv, yv), None)
+	}.get((xv, yv), (xv, yv))
 	
 	
 def _debug(i, c, exit=False):
@@ -84,7 +84,7 @@ def _debug(i, c, exit=False):
 		pc=str(pc).zfill(8),
 		mode=mode,
 		pos=str((x, y)),
-		dir=_dname((x, y)),
+		dir=_dname((xv, yv)),
 		instr=i,
 		stack=str(s[:sp])
 	))
