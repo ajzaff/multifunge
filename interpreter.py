@@ -20,10 +20,8 @@ dirs = [
 
 def _pop():
 	global sp
-	if sp > 0:
-		sp -= 1
-		return s[sp]
-	return 0
+	sp -= 1
+	return s[sp]
 
 
 def _push(v):
