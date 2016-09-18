@@ -18,12 +18,6 @@ dirs = [
 ]
 
 
-def _pop():
-	global sp
-	sp -= 1
-	return s[sp]
-
-
 def _push(v):
 	global sp, ss
 	if sp >= ss:
@@ -115,7 +109,9 @@ def str_escape():
 
 
 def push_logical_not():
-	_push(int(not _pop()))
+	global sp
+	sp -= 1
+	_push(int(not s[sp]))
 
 
 def toggle_str_mode():
@@ -216,8 +212,9 @@ def go_up():
 
 
 def go_x():
-	global xv, yv
-	xv, yv = 1 if _pop() == 0 else -1, 0
+	global sp, xv, yv
+	sp -= 1
+	xv, yv = 1 if s[sp] == 0 else -1, 0
 
 
 def push_gt():
@@ -251,8 +248,9 @@ def go_down():
 
 
 def go_y():
-	global xv, yv
-	xv, yv = 0, 1 if _pop() == 0 else -1
+	global sp, xv, yv
+	sp -= 1
+	xv, yv = 0, 1 if s[sp] == 0 else -1
 
 
 instr = {
