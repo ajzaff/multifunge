@@ -130,6 +130,7 @@ def advance_instr():
 
 
 def pop_stack_discard():
+	global sp
 	sp -= 1
 
 
