@@ -137,7 +137,7 @@ def pop_stack_discard():
 def push_mod():
 	global sp
 	sp -= 1
-	s[sp-1] = s[sp-1] % s[sp]
+	s[sp-1] %= s[sp]
 
 
 def push_read_integer():
@@ -147,13 +147,13 @@ def push_read_integer():
 def push_mul():
 	global sp
 	sp -= 1
-	s[sp-1] = s[sp-1] * s[sp]
+	s[sp-1] *= s[sp]
 
 
 def push_add():
 	global sp
 	sp -= 1
-	s[sp-1] = s[sp-1] + s[sp]
+	s[sp-1] += s[sp]
 
 
 def pop_write_ascii():
@@ -165,7 +165,7 @@ def pop_write_ascii():
 def push_sub():
 	global sp
 	sp -= 1
-	s[sp-1] = s[sp-1] - s[sp]
+	s[sp-1] -= s[sp]
 
 
 def pop_write_integer():
@@ -178,7 +178,7 @@ def pop_write_integer():
 def push_div():
 	global sp
 	sp -= 1
-	s[sp-1] = s[sp-1] // s[sp]
+	s[sp-1] //= s[sp]
 
 
 def dup():
