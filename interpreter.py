@@ -134,8 +134,8 @@ def pop_stack_discard():
 
 def push_mod():
 	global sp
-	s[sp-2] = s[sp-2] % s[sp-1]
 	sp -= 1
+	s[sp-1] = s[sp-1] % s[sp]
 
 
 def push_read_integer():
@@ -144,38 +144,39 @@ def push_read_integer():
 
 def push_mul():
 	global sp
-	s[sp-2] = s[sp-2] * s[sp-1]
 	sp -= 1
+	s[sp-1] = s[sp-1] * s[sp]
 
 
 def push_add():
 	global sp
-	s[sp-2] = s[sp-2] + s[sp-1]
 	sp -= 1
+	s[sp-1] = s[sp-1] + s[sp]
 
 
 def pop_write_ascii():
 	global sp
-	stdout.write(chr(s[sp-1]))
 	sp -= 1
+	stdout.write(chr(s[sp]))
 
 
 def push_sub():
 	global sp
-	s[sp-2] = s[sp-2] - s[sp-1]
 	sp -= 1
+	s[sp-1] = s[sp-1] - s[sp]
 
 
 def pop_write_integer():
 	global sp
-	stdout.write(str.format("{i} ", i=s[sp-1]))
 	sp -= 1
+	stdout.write(s[sp])
+	stdout.write(" ")
 
 
 def push_div():
 	global sp
-	s[sp-2] = s[sp-2] // s[sp-1]
 	sp -= 1
+	s[sp-1] = s[sp-1] // s[sp]
 
 
 def dup():
@@ -219,27 +220,26 @@ def go_x():
 
 def push_gt():
 	global sp
-	s[sp-2] = 1 if s[sp-1] > s[sp-2] else 0
 	sp -= 1
+	s[sp-1] = 1 if s[sp] > s[sp-1] else 0
 
 
 def get():
 	global sp
-	s[sp-2] = ord(_getl(s[sp-2], s[sp-1]))
 	sp -= 1
+	s[sp-1] = ord(_getl(s[sp-1], s[sp]))
 
 
 def put():
 	global sp
-	y = s[sp-1]
-	x = s[sp-2]
-	v = chr(s[sp-3])
-	try:
+	sp -= 3
+	y = s[sp+2]
+	x = s[sp+1]
+	v = chr(s[sp])
+	if 0 <= y < nlines and 0 <= x < linel[y]:
 		lines[y][x] = v
-		sp -= 3
-	except:
+	else:
 		m[x, y] = v
-		sp -= 3
 
 
 def go_down():
