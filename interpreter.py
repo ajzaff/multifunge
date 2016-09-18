@@ -82,8 +82,8 @@ def escape_escape():
 
 def _dname((xv, yv)):
 	return dir_names.get((xv, yv), (xv, yv))
-	
-	
+
+
 def _debug(c, exit=False):
 	global pc
 	pc += 1
