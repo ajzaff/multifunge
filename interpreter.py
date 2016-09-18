@@ -35,7 +35,12 @@ def _push(v):
 
 def _get():
 	if 0 <= y < nlines and 0 <= x < linel[y]:
-		return lines[y][x]
+		c = codes[y][x]
+		if c is not None:
+			return c
+		c = lines[y][x]
+		c = codes[y][x] = instr[mode].get(c, None)
+		return c
 	return m.get((x, y), None)
 		
 		
@@ -234,6 +239,7 @@ def put():
 	v = chr(s[sp])
 	if 0 <= y < nlines and 0 <= x < linel[y]:
 		lines[y][x] = v
+		codes[y][x] = None
 	else:
 		m[x, y] = v
 
@@ -396,9 +402,10 @@ instr = {
 
 
 def main(prog, input=stdin, output=stdout):
-	global linel, nlines, lines, m, xv, yv, x, y, pc, sp, ss, s, mode, stdin, stdout, running
+	global linel, nlines, lines, codes, m, xv, yv, x, y, pc, sp, ss, s, mode, stdin, stdout, running
 	with open(prog, "rb") as f:
 		lines = [list(line) for line in f.readlines()]
+		codes = [[None for c in line] for line in lines]
 		linel = [len(line) for line in lines]
 		nlines = len(lines)
 	m = {}
@@ -413,13 +420,11 @@ def main(prog, input=stdin, output=stdout):
 	stdout = output
 	running = True
 	while running:
-		i = _get()
-		if i is not None:
-			c = instr[mode].get(i, None)
-			if c is not None:
-				if not __debug__:
-					_debug(i, c)
-				c()
+		c = _get()
+		if c is not None:
+			if not __debug__:
+				_debug(i, c)
+			c()
 		x += xv
 		y += yv
 
