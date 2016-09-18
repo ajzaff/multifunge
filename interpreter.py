@@ -28,7 +28,7 @@ def _push(v):
 def _get():
 	if 0 <= y < nlines and 0 <= x < linel[y]:
 		return codes[y][x] or instr[mode].get(lines[y][x], None)
-	return m.get((x, y), None)
+	return instr[mode].get(m.get((x, y), None), None)
 		
 		
 def _getl(x, y):
