@@ -25,9 +25,10 @@ def _pop():
 
 
 def _push(v):
-	global sp
-	if sp >= len(s):
-		s.extend([0 for _ in range(sp)])
+	global sp, ss
+	if sp >= ss:
+		s.extend([0 for _ in range(ss)])
+		ss *= 2
 	s[sp] = v
 	sp += 1
 	
@@ -395,7 +396,7 @@ instr = {
 
 
 def main(prog, input=stdin, output=stdout):
-	global linel, nlines, lines, m, xv, yv, x, y, pc, sp, s, mode, stdin, stdout, running
+	global linel, nlines, lines, m, xv, yv, x, y, pc, sp, ss, s, mode, stdin, stdout, running
 	with open(prog, "rb") as f:
 		lines = [list(line) for line in f.readlines()]
 		linel = [len(line) for line in lines]
@@ -405,7 +406,8 @@ def main(prog, input=stdin, output=stdout):
 	x, y = 0, 0
 	pc = -1
 	sp = 0
-	s = [0 for _ in range(256)]
+	ss = 256
+	s = [0 for _ in range(ss)]
 	mode = "cmd"
 	stdin = input
 	stdout = output
