@@ -20,15 +20,13 @@ def _push(v):
 def _get():
 	if 0 <= y < nlines and 0 <= x < linel[y]:
 		return lines[y][x]
-	else:
-		return m.get((x, y), None)
+	return m.get((x, y), None)
 		
 		
 def _getl(x, y):
 	if 0 <= y < nlines and 0 <= x < linel[y]:
 		return lines[y][x]
-	else:
-		return m.get((x, y), '\0')
+	return m.get((x, y), '\0')
 
 
 def escape_0():
