@@ -19,12 +19,10 @@ dirs = [
 
 
 def _push(v):
-	global sp, ss
-	if sp >= ss:
-		s.extend([0 for _ in range(ss)])
-		ss *= 2
+	global sp
 	s[sp] = v
 	sp += 1
+	return True
 	
 
 def _get():
@@ -45,39 +43,51 @@ def _getl(x, y):
 
 
 def escape_0():
-	global mode
-	_push(0)
+	global sp, mode
+	s[sp] = 0
+	sp += 1
 	mode = "str"
+	return True
 
 
 def escape_tab():
-	global mode
-	_push(9)
+	global sp, mode
+	s[sp] = 9
+	sp += 1
 	mode = "str"
+	return True
 
 
 def escape_lf():
-	global mode
-	_push(10)
+	global sp, mode
+	s[sp] = 10
+	sp += 1
 	mode = "str"
+	return True
 
 
 def escape_cr():
-	global mode
-	_push(13)
+	global sp, mode
+	s[sp] = 13
+	sp += 1
 	mode = "str"
+	return True
 
 
 def escape_quote():
-	global mode
-	_push(34)
+	global sp, mode
+	s[sp] = 34
+	sp += 1
 	mode = "str"
+	return True
 	
 	
 def escape_escape():
-	global mode
-	_push(92)
+	global sp, mode
+	s[sp] = 92
+	sp += 1
 	mode = "str"
+	return True
 
 
 def _dname((xv, yv)):
@@ -109,9 +119,7 @@ def str_escape():
 
 
 def push_logical_not():
-	global sp
-	sp -= 1
-	_push(int(not s[sp]))
+	s[sp-1] = int(not s[sp-1])
 
 
 def toggle_str_mode():
@@ -137,7 +145,10 @@ def push_mod():
 
 
 def push_read_integer():
-	_push(int(stdin.readline()))
+	global sp
+	s[sp] = int(stdin.readline())
+	sp += 1
+	return True
 
 
 def push_mul():
@@ -178,7 +189,10 @@ def push_div():
 
 
 def dup():
-	_push(s[sp-1])
+	global sp
+	s[sp] = s[sp-1]
+	sp += 1
+	return True
 
 
 def go_left():
@@ -423,7 +437,10 @@ def main(prog, input=stdin, output=stdout):
 		if c is not None:
 			if not __debug__:
 				_debug(c)
-			c()
+			if c():  # c() == True means a push occurred, evaluate push bounds and resize array as necessary.
+				if sp >= ss:
+					s.extend([0 for _ in range(ss)])
+					ss *= 2
 		x += xv
 		y += yv
 
