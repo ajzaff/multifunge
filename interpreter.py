@@ -1,6 +1,22 @@
 import sys
 
 
+dir_names = {
+	( 0, -1): "up",
+	( 0,  1): "down",
+	(-1,  0): "left",
+	( 1,  0): "right"
+}
+
+
+dirs = [
+	( 0, -1),
+	( 0,  1),
+	(-1,  0),
+	( 1,  0)
+]
+
+
 def _pop():
 	global sp
 	if sp > 0:
@@ -66,12 +82,7 @@ def escape_escape():
 
 
 def _dname((xv, yv)):
-	return {
-		( 0, -1): "up",
-		( 0,  1): "down",
-		(-1,  0): "left",
-		( 1,  0): "right"
-	}.get((xv, yv), (xv, yv))
+	return dir_names.get((xv, yv), (xv, yv))
 	
 	
 def _debug(i, c, exit=False):
@@ -183,10 +194,7 @@ def go_right():
 def go_away():
 	global xv, yv
 	import random
-	t = random.randint(0, 1) * 2 - 1
-	xv = random.randint(0, 1)
-	yv = (1 ^ xv) * t
-	xv *= t
+	(xv, yv) = random.choice(dirs)
 
 
 def stop():
