@@ -1,4 +1,5 @@
-import sys
+from sys import stdin, stdout, argv, exit
+from random import choice
 
 
 dir_names = {
@@ -194,7 +195,7 @@ def go_right():
 def go_away():
 	global xv, yv
 	import random
-	xv, yv = random.choice(dirs)
+	xv, yv = choice(dirs)
 
 
 def stop():
@@ -398,7 +399,7 @@ instr = {
 }
 
 
-def main(prog, input=sys.stdin, output=sys.stdout):
+def main(prog, input=stdin, output=stdout):
 	global linel, nlines, lines, m, xv, yv, x, y, pc, sp, s, mode, stdin, stdout, running
 	with open(prog, "rb") as f:
 		lines = [list(line) for line in f.readlines()]
@@ -427,7 +428,7 @@ def main(prog, input=sys.stdin, output=sys.stdout):
 
 
 if __name__ == "__main__":
-	if len(sys.argv) < 2:
-		sys.stdout.write("usage: %s <PROGRAM>\n" % sys.argv[0])
-		sys.exit(1)
-	main(sys.argv[1])
+	if len(argv) < 2:
+		stdout.write("usage: %s <PROGRAM>\n" % sys.argv[0])
+		exit(1)
+	main(argv[1])
