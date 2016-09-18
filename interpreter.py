@@ -18,14 +18,14 @@ def _push(v):
 	
 
 def _get():
-	if 0 <= y < nlines and 0 <= x < len(lines[y]):
+	if 0 <= y < nlines and 0 <= x < linel[y]:
 		return lines[y][x]
 	else:
 		return m.get((x, y), None)
 		
 		
 def _getl(x, y):
-	if 0 <= y < nlines and 0 <= x < len(lines[y]):
+	if 0 <= y < nlines and 0 <= x < linel[y]:
 		return lines[y][x]
 	else:
 		return m.get((x, y), '\0')
@@ -393,9 +393,10 @@ instr = {
 
 
 def main(prog, input=sys.stdin, output=sys.stdout):
-	global nlines, lines, m, xv, yv, x, y, pc, sp, s, mode, stdin, stdout, running
+	global linel, nlines, lines, m, xv, yv, x, y, pc, sp, s, mode, stdin, stdout, running
 	with open(prog, "rb") as f:
 		lines = [list(line) for line in f.readlines()]
+		linel = [len(line) for line in lines]
 		nlines = len(lines)
 	m = {}
 	xv, yv = 1, 0
