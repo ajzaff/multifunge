@@ -4,7 +4,7 @@
 #include <time.h>
 
 
-#define DEBUG	1
+#define DEBUG	0
 #define INI_LINE_LEN	80
 #define INI_BUF_LEN	25
 #define INI_STACK_SIZE	11
