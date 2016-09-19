@@ -941,8 +941,7 @@ int put()
 	int x = S[--SP];
 	int v = S[--SP];
 	// FIXME: store out of range in alternate memory:
-	if (y >= 0 && y < NLINES && x >= 0 && x < LINEL[y])
-		LINES[y][x] = (char) v;
+	LINES[y][x] = (char) v;
 	return 0;
 }
 
