@@ -759,10 +759,9 @@ int push_logical_not(void)
 }
 
 
-int toggle_str_mode()
+int set_str_mode()
 {
-	MODE = MODE == MODE_CMD?
-		MODE_STR : MODE_CMD;
+	MODE = MODE_STR;
 	return 0;
 }
 
@@ -998,7 +997,7 @@ int (*INSTR[3][128])(void) = {
 		/* US */	NULL,
 		/* Space */	NULL,
 		/* ! */	push_logical_not,
-		/* " */	toggle_str_mode,
+		/* " */	set_str_mode,
 		/* # */	advance_instr,
 		/* $ */	pop_stack_discard,
 		/* % */	push_mod,
