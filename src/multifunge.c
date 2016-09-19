@@ -914,7 +914,7 @@ int go_up()
 int go_x()
 {
 	YV = 0;
-	XV = S[SP--]? -1 : 1;
+	XV = S[--SP]? -1 : 1;
 	return 0;
 }
 
@@ -958,7 +958,7 @@ int go_down()
 int go_y()
 {
 	XV = 0;
-	YV = S[SP--]? -1 : 1;
+	YV = S[--SP]? -1 : 1;
 	return 0;
 }
 
