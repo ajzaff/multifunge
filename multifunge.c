@@ -828,9 +828,7 @@ int cmd_skipws()
 	int x = X + XV,
 		y = Y + YV;
 	char c = LINES[y][x];
-	// FIXME: benchmark against
-	// conjunctive conditional.
-	while(c == 32 || (c >= 9 && c <= 13)) {
+	while(c == ' ') {
 		X = x;
 		Y = y;
 		x = X + XV;
