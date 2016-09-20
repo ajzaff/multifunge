@@ -971,7 +971,7 @@ int cmd_skipws()
 		// conjunctive conditional.
 	} while(LINES[Y][X] == 32  ||
 		(LINES[Y][X] >= 9 &&
-		 LINES[Y][X] <= 13);
+		 LINES[Y][X] <= 13));
 	return 0;
 }
 
