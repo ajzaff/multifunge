@@ -962,6 +962,20 @@ int go_y()
 }
 
 
+int cmd_skipws()
+{
+	do {
+		X += XV;
+		Y += YV;
+		// FIXME: benchmark against
+		// conjunctive conditional.
+	} while(LINES[Y][X] == 32  ||
+		(LINES[Y][X] >= 9 &&
+		 LINES[Y][X] <= 13);
+	return 0;
+}
+
+
 int (*INSTR[3][128])(void) = {
 	{ /* MODE_CMD */
 		/* NUL */	NULL,
@@ -973,11 +987,11 @@ int (*INSTR[3][128])(void) = {
 		/* ACK */	NULL,
 		/* BEL */	NULL,
 		/* BS */	NULL,
-		/* HT */	NULL,
-		/* LF */	NULL,
-		/* VT */	NULL,
-		/* FF */	NULL,
-		/* CR */	NULL,
+		/* HT */	cmd_skipws,
+		/* LF */	cmd_skipws,
+		/* VT */	cmd_skipws,
+		/* FF */	cmd_skipws,
+		/* CR */	cmd_skipws,
 		/* SO */	NULL,
 		/* SI */	NULL,
 		/* DLE */	NULL,
@@ -996,7 +1010,7 @@ int (*INSTR[3][128])(void) = {
 		/* GS */	NULL,
 		/* RS */	NULL,
 		/* US */	NULL,
-		/* Space */	NULL,
+		/* Space */	cmd_skipws,
 		/* ! */	push_logical_not,
 		/* " */	set_str_mode,
 		/* # */	advance_instr,
