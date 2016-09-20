@@ -3,11 +3,9 @@
 #include <string.h>
 #include <time.h>
 
-
 #define INI_LINE_LEN	80
 #define INI_BUF_LEN	25
 #define INI_STACK_SIZE	11
-
 
 int NBUFFER = INI_BUF_LEN;
 int NLINES = 0;
@@ -28,7 +26,6 @@ enum mode
 	MODE_ESC
 } MODE = MODE_CMD;
 
-
 #ifdef DEBUG
 char *_dirname()
 {
@@ -36,7 +33,6 @@ char *_dirname()
 		XV == 1? "right" :
 		YV == -1? "up" : "down";
 }
-
 
 char *_modname()
 {
@@ -49,7 +45,6 @@ char *_modname()
 		return "esc";
 	}
 }
-
 
 void _debug()
 {
@@ -70,13 +65,11 @@ void _debug()
 }
 #endif /* DEBUG */
 
-
 int push(int v)
 {
 	S[SP++] = v;
 	return 1;
 }
-
 
 int escape(int code)
 {
@@ -85,60 +78,50 @@ int escape(int code)
 	return 1;
 }
 
-
 int escape_0()
 {
 	return escape('\0');
 }
-
 
 int escape_tab()
 {
 	return escape('\t');
 }
 
-
 int escape_lf()
 {
 	return escape('\n');
 }
-
 
 int escape_cr()
 {
 	return escape('\r');
 }
 
-
 int escape_quote()
 {
 	return escape('"');
 }
-
 
 int escape_escape()
 {
 	return escape('\\');
 }
 
-
 int str_tab()
 {
 	return push('\t');
 }
-
 
 int str_space()
 {
 	return push(' ');
 }
 
-
 int str_bang()
 {
 	return push('!');
 }
-
 
 int str_quote()
 {
@@ -146,347 +129,289 @@ int str_quote()
 	return 0;
 }
 
-
 int str_hash()
 {
 	return push('#');
 }
-
 
 int str_dollar()
 {
 	return push('$');
 }
 
-
 int str_percent()
 {
 	return push('%');
 }
-
 
 int str_amp()
 {
 	return push('&');
 }
 
-
 int str_squote()
 {
 	return push('\'');
 }
-
 
 int str_lparen()
 {
 	return push('(');
 }
 
-
 int str_rparen()
 {
 	return push(')');
 }
-
 
 int str_ast()
 {
 	return push('*');
 }
 
-
 int str_plus()
 {
 	return push('+');
 }
-
 
 int str_comma()
 {
 	return push(',');
 }
 
-
 int str_minus()
 {
 	return push('-');
 }
-
 
 int str_period()
 {
 	return push('.');
 }
 
-
 int str_slash()
 {
 	return push('/');
 }
-
 
 int str_0()
 {
 	return push('0');
 }
 
-
 int str_1()
 {
 	return push('1');
 }
-
 
 int str_2()
 {
 	return push('2');
 }
 
-
 int str_3()
 {
 	return push('3');
 }
-
 
 int str_4()
 {
 	return push('4');
 }
 
-
 int str_5()
 {
 	return push('5');
 }
-
 
 int str_6()
 {
 	return push('6');
 }
 
-
 int str_7()
 {
 	return push('7');
 }
-
 
 int str_8()
 {
 	return push('8');
 }
 
-
 int str_9()
 {
 	return push('9');
 }
-
 
 int str_colon()
 {
 	return push(':');
 }
 
-
 int str_scolon()
 {
 	return push(';');
 }
-
 
 int str_lt()
 {
 	return push('<');
 }
 
-
 int str_eq()
 {
 	return push('=');
 }
-
 
 int str_gt()
 {
 	return push('>');
 }
 
-
 int str_query()
 {
 	return push('?');
 }
-
 
 int str_at()
 {
 	return push('@');
 }
 
-
 int str_A()
 {
 	return push('A');
 }
-
 
 int str_B()
 {
 	return push('B');
 }
 
-
 int str_C()
 {
 	return push('C');
 }
-
 
 int str_D()
 {
 	return push('D');
 }
 
-
 int str_E()
 {
 	return push('E');
 }
-
 
 int str_F()
 {
 	return push('F');
 }
 
-
 int str_G()
 {
 	return push('G');
 }
-
 
 int str_H()
 {
 	return push('H');
 }
 
-
 int str_I()
 {
 	return push('I');
 }
-
 
 int str_J()
 {
 	return push('J');
 }
 
-
 int str_K()
 {
 	return push('K');
 }
-
 
 int str_L()
 {
 	return push('L');
 }
 
-
 int str_M()
 {
 	return push('M');
 }
-
 
 int str_N()
 {
 	return push('N');
 }
 
-
 int str_O()
 {
 	return push('O');
 }
-
 
 int str_P()
 {
 	return push('P');
 }
 
-
 int str_Q()
 {
 	return push('Q');
 }
-
 
 int str_R()
 {
 	return push('R');
 }
 
-
 int str_S()
 {
 	return push('S');
 }
-
 
 int str_T()
 {
 	return push('T');
 }
 
-
 int str_U()
 {
 	return push('U');
 }
-
 
 int str_V()
 {
 	return push('V');
 }
 
-
 int str_W()
 {
 	return push('W');
 }
-
 
 int str_X()
 {
 	return push('X');
 }
 
-
 int str_Y()
 {
 	return push('Y');
 }
-
 
 int str_Z()
 {
 	return push('Z');
 }
 
-
 int str_lbrace() {
 	return push('[');
 }
-
 
 int str_escape()
 {
@@ -494,266 +419,221 @@ int str_escape()
 	return 0;
 }
 
-
 int str_rbrace() {
 	return push(']');
 }
-
 
 int str_accent() {
 	return push('^');
 }
 
-
 int str_uscore() {
 	return push('_');
 }
 
-
 int str_tick() {
 	return push('`');
 }
-
 
 int str_a()
 {
 	return push('a');
 }
 
-
 int str_b()
 {
 	return push('b');
 }
-
 
 int str_c()
 {
 	return push('c');
 }
 
-
 int str_d()
 {
 	return push('d');
 }
-
 
 int str_e()
 {
 	return push('e');
 }
 
-
 int str_f()
 {
 	return push('f');
 }
-
 
 int str_g()
 {
 	return push('g');
 }
 
-
 int str_h()
 {
 	return push('h');
 }
-
 
 int str_i()
 {
 	return push('i');
 }
 
-
 int str_j()
 {
 	return push('j');
 }
-
 
 int str_k()
 {
 	return push('k');
 }
 
-
 int str_l()
 {
 	return push('l');
 }
-
 
 int str_m()
 {
 	return push('m');
 }
 
-
 int str_n()
 {
 	return push('n');
 }
-
 
 int str_o()
 {
 	return push('o');
 }
 
-
 int str_p()
 {
 	return push('p');
 }
-
 
 int str_q()
 {
 	return push('q');
 }
 
-
 int str_r()
 {
 	return push('r');
 }
-
 
 int str_s()
 {
 	return push('s');
 }
 
-
 int str_t()
 {
 	return push('t');
 }
-
 
 int str_u()
 {
 	return push('u');
 }
 
-
 int str_v()
 {
 	return push('v');
 }
-
 
 int str_w()
 {
 	return push('w');
 }
 
-
 int str_x()
 {
 	return push('x');
 }
-
 
 int str_y()
 {
 	return push('y');
 }
 
-
 int str_z()
 {
 	return push('z');
 }
-
 
 int str_lblock()
 {
 	return push('{');
 }
 
-
 int str_pipe()
 {
 	return push('|');
 }
-
 
 int str_rblock()
 {
 	return push('}');
 }
 
-
 int str_tilde()
 {
 	return push('~');
 }
-
 
 int push_0()
 {
 	return push(0);
 }
 
-
 int push_1()
 {
 	return push(1);
 }
-
 
 int push_2()
 {
 	return push(2);
 }
 
-
 int push_3()
 {
 	return push(3);
 }
-
 
 int push_4()
 {
 	return push(4);
 }
 
-
 int push_5()
 {
 	return push(5);
 }
-
 
 int push_6()
 {
 	return push(6);
 }
 
-
 int push_7()
 {
 	return push(7);
 }
-
 
 int push_8()
 {
 	return push(8);
 }
 
-
 int push_9()
 {
 	return push(9);
 }
-
 
 int push_logical_not(void)
 {
@@ -761,13 +641,11 @@ int push_logical_not(void)
 	return 0;
 }
 
-
 int set_str_mode()
 {
 	MODE = MODE_STR;
 	return 0;
 }
-
 
 int advance_instr()
 {
@@ -776,13 +654,11 @@ int advance_instr()
 	return 0;
 }
 
-
 int pop_stack_discard()
 {
 	SP--;
 	return 0;
 }
-
 
 int push_mod()
 {
@@ -791,7 +667,6 @@ int push_mod()
 	return 0;
 }
 
-
 int push_read_integer()
 {
 	int i = 0;
@@ -799,14 +674,12 @@ int push_read_integer()
 	S[SP++] = i;
 	return 1;
 }
-
 int push_mul()
 {
 	SP--;
 	S[SP-1] *= S[SP];
 	return 0;
 }
-
 
 int push_add()
 {
@@ -815,13 +688,11 @@ int push_add()
 	return 0;
 }
 
-
 int pop_write_ascii()
 {
 	printf("%c", (char)S[--SP]);
 	return 0;
 }
-
 
 int push_sub()
 {
@@ -830,13 +701,11 @@ int push_sub()
 	return 0;
 }
 
-
 int pop_write_integer()
 {
 	printf("%d ", S[--SP]);
 	return 0;
 }
-
 
 int push_div()
 {
@@ -845,14 +714,12 @@ int push_div()
 	return 0;
 }
 
-
 int dup()
 {
 	S[SP] = S[SP-1];
 	SP++;
 	return 1;
 }
-
 
 int go_left()
 {
@@ -861,14 +728,12 @@ int go_left()
 	return 0;
 }
 
-
 int go_right()
 {
 	XV = 1;
 	YV = 0;
 	return 0;
 }
-
 
 int go_away()
 {
@@ -888,13 +753,11 @@ int go_away()
 	}
 }
 
-
 int stop()
 {
 	RUNNING = 0;
 	return 0;
 }
-
 
 int swp()
 {
@@ -904,14 +767,12 @@ int swp()
 	return 0;
 }
 
-
 int go_up()
 {
 	XV = 0;
 	YV = -1;
 	return 0;
 }
-
 
 int go_x()
 {
@@ -920,7 +781,6 @@ int go_x()
 	return 0;
 }
 
-
 int push_gt()
 {
 	SP--;
@@ -928,14 +788,12 @@ int push_gt()
 	return 0;
 }
 
-
 int get()
 {
 	SP--;
 	S[SP-1] = LINES[S[SP]][S[SP-1]];
 	return 0;
 }
-
 
 int put()
 {
@@ -947,7 +805,6 @@ int put()
 	return 0;
 }
 
-
 int go_down()
 {
 	XV = 0;
@@ -955,14 +812,12 @@ int go_down()
 	return 0;
 }
 
-
 int go_y()
 {
 	XV = 0;
 	YV = S[--SP]? -1 : 1;
 	return 0;
 }
-
 
 int cmd_skipws()
 {
@@ -981,7 +836,6 @@ int cmd_skipws()
 	return 0;
 }
 
-
 #if defined(__MF_16) || defined(__MF_98)
 /* Define Funge-{16, 98} extensions */
 int cmd98_jmpover()
@@ -993,43 +847,36 @@ int cmd98_jmpover()
 	return 0;
 }
 
-
 int push98_10()
 {
 	return push(10);
 }
-
 
 int push98_11()
 {
 	return push(11);
 }
 
-
 int push98_12()
 {
 	return push(12);
 }
-
 
 int push98_13()
 {
 	return push(13);
 }
 
-
 int push98_14()
 {
 	return push(14);
 }
-
 
 int push98_15()
 {
 	return push(15);
 }
 #endif /* __MF_{16, 98} */
-
 
 int (*INSTR[3][128])(void) = {
 	{ /* MODE_CMD */
@@ -1437,7 +1284,6 @@ int (*INSTR[3][128])(void) = {
 	}
 };
 
-
 int main(int argc, char **argv)
 {
 	if (argc < 2) {
@@ -1479,7 +1325,6 @@ int main(int argc, char **argv)
 		X += XV;
 		Y += YV;
 	}
-
 	// Cleanup
 	free(S);
 	for (i=0; i < NLINES; i++)
