@@ -4,7 +4,6 @@
 #include <time.h>
 
 
-#define DEBUG	0
 #define INI_LINE_LEN	80
 #define INI_BUF_LEN	25
 #define INI_STACK_SIZE	11
@@ -31,6 +30,7 @@ enum mode
 } MODE = MODE_CMD;
 
 
+#ifdef DEBUG
 char *_dirname()
 {
 	return XV == -1? "left"	:
@@ -52,7 +52,6 @@ char *_modname()
 }
 
 
-#if DEBUG
 void _debug()
 {
 	printf("%d\t%s\t(%d,%d)\t%s\t%c\t",
@@ -1401,7 +1400,7 @@ int main(int argc, char **argv)
 		if (i) {
 			int (*f)(void) = INSTR[MODE][i];
 			if (f) {
-				#if DEBUG
+				#ifdef DEBUG
 				_debug();
 				#endif /* DEBUG */
 				if (f() && SP >= SS) {
