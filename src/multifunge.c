@@ -964,14 +964,18 @@ int go_y()
 
 int cmd_skipws()
 {
-	do {
-		X += XV;
-		Y += YV;
-		// FIXME: benchmark against
-		// conjunctive conditional.
-	} while(LINES[Y][X] == 32  ||
-		(LINES[Y][X] >= 9 &&
-		 LINES[Y][X] <= 13));
+	int x = X + XV,
+		y = Y + YV;
+	char c = LINES[y][x];
+	// FIXME: benchmark against
+	// conjunctive conditional.
+	while(c == 32 || (c >= 9 && c <= 13)) {
+		X = x;
+		Y = y;
+		x = X + XV;
+		y = Y + YV;
+		c = LINES[y][x];
+	}
 	return 0;
 }
 
