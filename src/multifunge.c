@@ -11,7 +11,6 @@
 
 int NBUFFER = INI_BUF_LEN;
 int NLINES = 0;
-int *LINEL = NULL;
 char **LINES = NULL;
 int RUNNING = 1;
 int X = 0,
@@ -1385,7 +1384,6 @@ int main(int argc, char **argv)
 		printf("error: file is unreadable.\n\n");
 		exit(1);
 	}
-	LINEL = (int*)malloc(sizeof(int) * NBUFFER);
 	LINES = (char**)malloc(sizeof(char*) * NBUFFER);
 	int i = 0;
 	size_t len = 0;
@@ -1393,12 +1391,10 @@ int main(int argc, char **argv)
 	while ((i=getline(&line, &len, file)) != -1) {
 		if (NLINES >= NBUFFER) {  // double line memory:
 			NBUFFER *= 2;
-			LINEL = (int*)realloc(LINEL, sizeof(int) * NBUFFER);
 			LINES = (char**)realloc(LINES, sizeof(char*) * NBUFFER);
 		}
 		LINES[NLINES] = (char*)malloc(i);
 		LINES[NLINES] = (char*)memcpy(LINES[NLINES], line, i);
-		LINEL[NLINES] = i;
 		NLINES++;
 	}
 	// Prepare runtime
@@ -1421,7 +1417,6 @@ int main(int argc, char **argv)
 
 	// Cleanup
 	free(S);
-	free(LINEL);
 	for (i=0; i < NLINES; i++)
 		free(LINES[i]);
 	free(LINES);
