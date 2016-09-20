@@ -982,6 +982,25 @@ int cmd_skipws()
 }
 
 
+#ifdef __MF_98
+/* Define Funge-98 extensions */
+int cmd98_jmpover()
+{
+	int x = X + XV,
+		y = Y + YV;
+	char c = LINES[y][x];
+	while(c != ';') {
+		X = x;
+		Y = y;
+		x = X + XV;
+		y = Y + YV;
+		c = LINES[y][x];
+	}
+	return 0;
+}
+#endif /* __MF_98 */
+
+
 int (*INSTR[3][128])(void) = {
 	{ /* MODE_CMD */
 		/* NUL */	NULL,
@@ -1043,7 +1062,11 @@ int (*INSTR[3][128])(void) = {
 		/* 8 */	push_8,
 		/* 9 */	push_9,
 		/* : */	dup,
+#ifdef __MF_98
+		/* ; */	cmd98_jmpover,
+#else
 		/* ; */	NULL,
+#endif /* __MF_98 */
 		/* < */	go_left,
 		/* = */	NULL,
 		/* > */	go_right,
