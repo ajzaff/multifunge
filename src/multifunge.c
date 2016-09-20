@@ -986,16 +986,10 @@ int cmd_skipws()
 /* Define Funge-98 extensions */
 int cmd98_jmpover()
 {
-	int x = X + XV,
-		y = Y + YV;
-	char c = LINES[y][x];
-	while(c != ';') {
-		X = x;
-		Y = y;
-		x = X + XV;
-		y = Y + YV;
-		c = LINES[y][x];
-	}
+	do {
+		X += XV;
+		Y += YV;
+	} while(LINES[Y][X] != ';');
 	return 0;
 }
 #endif /* __MF_98 */
