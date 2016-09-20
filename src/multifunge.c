@@ -52,6 +52,7 @@ char *_modname()
 }
 
 
+#if DEBUG
 void _debug()
 {
 	printf("%d\t%s\t(%d,%d)\t%s\t%c\t",
@@ -66,6 +67,7 @@ void _debug()
 		printf("%d, ", S[i]);
 	printf("%d]\n", S[i]);
 }
+#endif /* DEBUG */
 
 
 int push(int v)
