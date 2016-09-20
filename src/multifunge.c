@@ -61,9 +61,12 @@ void _debug()
 		LINES[Y][X]);
 	int i;
 	printf("[");
-	for(i=0; i < SP-1; i++)
-		printf("%d, ", S[i]);
-	printf("%d]\n", S[i]);
+	if (SP > 0) {
+		for(i=0; i < SP-1; i++)
+			printf("%d, ", S[i]);
+		printf("%d", S[i]);
+	}
+	printf("]\n");
 }
 #endif /* DEBUG */
 
