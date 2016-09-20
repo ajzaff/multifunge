@@ -1407,17 +1407,13 @@ int main(int argc, char **argv)
 	
 	while (RUNNING) {
 		i = LINES[Y][X];
-		if (i) {
-			int (*f)(void) = INSTR[MODE][i];
-			if (f) {
-				#ifdef DEBUG
-				_debug();
-				#endif /* DEBUG */
-				if (f() && SP >= SS) {
-					SS *= 2;
-					S = (int*)realloc(S, SS);
-				}
-			}
+		int (*f)(void) = INSTR[MODE][i];
+		#ifdef DEBUG
+		_debug();
+		#endif /* DEBUG */
+		if (f() && SP >= SS) {
+			SS *= 2;
+			S = (int*)realloc(S, SS);
 		}
 		X += XV;
 		Y += YV;
