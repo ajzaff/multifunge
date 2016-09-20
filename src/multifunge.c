@@ -737,18 +737,22 @@ int go_right()
 
 int go_away()
 {
-	// FIXME: optimize this:
-	int r = rand() % 4;
-	switch (r) {
-	case 0:  // up
-	case 2:  // down
-		XV = 0;
-		YV = r - 1;
+	switch (rand() % 4) {
+	case 0: // up
+		XV =  0;
+		YV = -1;
 		return 0;
-	case 1:  // left
-	default:  // right
-		YV = 0;
-		XV = r - 2;
+	case 1: // down
+		XV =  0;
+		YV =  1;
+		return 0;
+	case 2: // left
+		XV = -1;
+		YV =  0;
+		return 0;
+	default:// right
+		XV =  1;
+		YV =  0;
 		return 0;
 	}
 }
