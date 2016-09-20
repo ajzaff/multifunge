@@ -1387,10 +1387,6 @@ int main(int argc, char **argv)
 	size_t len = 0;
 	char *line = NULL;
 	while ((i=getline(&line, &len, file)) != -1) {
-		if (line[i - 1] == '\n') {  // strip \n, if any.
-			line[i - 1] = '\0';
-			i--;
-		}
 		if (NLINES >= NBUFFER) {  // double line memory:
 			NBUFFER *= 2;
 			LINEL = (int*)realloc(LINEL, sizeof(int) * NBUFFER);
@@ -1400,10 +1396,6 @@ int main(int argc, char **argv)
 		LINES[NLINES] = (char*)memcpy(LINES[NLINES], line, i);
 		LINEL[NLINES] = i;
 		NLINES++;
-	}
-	if ((i = NBUFFER - NLINES + 1) > 0) {  // clear remaining line data:
-		memset(LINEL+NLINES, 0, i);
-		memset(LINES+NLINES, 0, i);
 	}
 	// Prepare runtime
 	S = (int*)malloc(sizeof(int) * SS);
