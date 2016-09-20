@@ -992,6 +992,42 @@ int cmd98_jmpover()
 	} while(LINES[Y][X] != ';');
 	return 0;
 }
+
+
+int push98_10()
+{
+	return push(10);
+}
+
+
+int push98_11()
+{
+	return push(11);
+}
+
+
+int push98_12()
+{
+	return push(12);
+}
+
+
+int push98_13()
+{
+	return push(13);
+}
+
+
+int push98_14()
+{
+	return push(14);
+}
+
+
+int push98_15()
+{
+	return push(15);
+}
 #endif /* __MF_{16, 98} */
 
 
@@ -1098,12 +1134,21 @@ int (*INSTR[3][128])(void) = {
 		/* ^ */	go_up,
 		/* _ */	go_x,
 		/* ` */	push_gt,
+#if defined(__MF_16) || defined(__MF_98)
+		/* a */	push98_10,
+		/* b */	push98_11,
+		/* c */	push98_12,
+		/* d */	push98_13,
+		/* e */	push98_14,
+		/* f */	push98_15,
+#else
 		/* a */	NULL,
 		/* b */	NULL,
 		/* c */	NULL,
 		/* d */	NULL,
 		/* e */	NULL,
 		/* f */	NULL,
+#endif /* __MF_{16, 98} */
 		/* g */	get,
 		/* h */	NULL,
 		/* i */	NULL,
